@@ -1,0 +1,19 @@
+title: New Tool – Pretty Print JSON
+---
+author: Andrew Shay
+---
+body:
+
+I have released a new, simple tool built with Python.  
+Pretty Print JSON allows you to easily take ugly JSON, make it pretty, then print it out (and save it)  
+
+[https://github.com/Andrew-Shay/Pretty-Print-JSON](https://github.com/Andrew-Shay/Pretty-Print-JSON)  
+
+`pip install pretty_print_json`  
+`ppj -h`
+---
+pub_date: 2015-10-29
+---
+description: Print and save pretty JSON
+---
+tags: python,json,pretty,print

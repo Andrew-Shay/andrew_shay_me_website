@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="theme-color" content="#48a5ab">
+    <meta name="keywords" content="andrew,shay,{{ this.tags }}">
+    <meta name="description" content="{{ this.description }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="{{ '/static/img/apple-touch-icon.png'|url }}">
+    <link rel="icon" sizes="192x192" href="{{ '/static/img/apple-touch-icon.png'|url }}">
+    <link rel="shortcut icon" href="{{ '/static/img/favicon.ico'|url }}">
+    <link rel="stylesheet" href="{{ '/static/main.css'|url }}">
+    <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+    <script async src="{{ '/static/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js'|url }}"></script>
+    <title>{{ this.title }} — andrewshay.me</title>
+</head>
+
+<body>
+
+    <div class="master-wrap">
+        <div class="header-container">
+            <header class="wrapper clearfix">
+                <a href="/blog">
+                    <img id="logo" src="{{ '/static/img/logo.png'|url }}" />
+                </a>
+                <nav>
+                    <ul>
+                        {% for href, title in [ ['/blog', 'BLOG'], ['/projects', 'PROJECTS'], ['/contact', 'CONTACT'] ] %}
+                        <li><a href="{{ href|url }}">{{ title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </nav>
+            </header>
+        </div>
+
+        <div class="main-container">
+            {% block body %}{% endblock %}
+        </div>
+        <!-- #main-container -->
+
+        <div class="footer-container">
+            <footer style="padding-top: 45px;" class="wrapper">
+                <span>andrewshay.me</span>
+            </footer>
+        </div>
+    </div>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+</body>
+<!-- Andrew Shay | andrewshay.me | Built with HTML5 Boilerplate -->
+</html>

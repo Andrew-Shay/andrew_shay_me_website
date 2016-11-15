@@ -1,0 +1,29 @@
+title: Portable Virtualenv for Python
+---
+pub_date: 2015-11-14
+---
+author: Andrew Shay
+---
+body:
+
+I needed a way to create a portable virtualenv but the answers I came across online were suggesting solutions like py2exe or cxfreeze which are “too much”.  
+ I need a simple way to make that virtualenv portable so that it can be activated anywhere.
+
+I came up with a solution that is working well, but it has only been tested with a few Python packages.
+
+First, create your virtualenv on the same OS that it will be deployed on.  
+Now you must write a script to accomplish the following goals, which will make the env portable.  This script will need to run every time that the ENV is moved.  
+* Create a variable called new_env which will store the path to the ENV folder’s new location, including the folder name
+* Open ENV/bin/activate and change every line that starts with VIRTUAL_ENV to reflect the new path
+* Now loop through every file in ENV/bin
+* Open the file, and if the first line starts with “#!”, it’s likely pointing to the ENV’s Python.  That line needs to be rewritten to reflect the new path to Python.
+* Write the new contents back to the file
+
+You should skip opening, “activate”, “python”, “python2” etc
+
+That’s it. You should be able to activate the ENV.
+
+---
+description: Make a virtualenv portable
+---
+tags: python,virtualenv,portable

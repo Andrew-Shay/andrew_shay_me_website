@@ -1,0 +1,14 @@
+title: Blog built with Lektor
+---
+author: Andrew Shay
+---
+body:
+
+My blog has been rebuilt and is now generated with Lektor!  
+[Get Lektor!](https://www.getlektor.com/)
+---
+pub_date: 2016-11-16
+---
+description: Blog built with Lektor
+---
+tags: blog,lektor

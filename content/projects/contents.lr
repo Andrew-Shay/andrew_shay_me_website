@@ -16,7 +16,12 @@ Command line tool for pretty printing JSON
 
 # Source of andrewshay.me  
 The source of this website is on [GitHub](https://github.com/Andrew-Shay/andrew_shay_me_website)
+
+<br />
+
+# shayConcepts
+[shayConcepts](http://shayConcepts.com) is where I distribute my software aimed at the general public.
 ---
 description: Projects - Neuron, Pretty Print JSON
 ---
-tags: python,open,source,projects,pretty,print,json,neuron
+tags: python,open,source,projects,pretty,print,json,neuron,shayconcepts

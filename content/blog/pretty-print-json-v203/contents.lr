@@ -1,0 +1,15 @@
+title: Pretty Print JSON v2.0.3
+---
+author: Andrew Shay
+---
+body:
+
+[Pretty Print JSON](https://github.com/Andrew-Shay/Pretty-Print-JSON) has been updated to v2.0.3.  
+The usage has been simplified and it is now a universal bdist wheel.  
+`pip install pretty_print_json`
+---
+description: Pretty Print JSON v2.0.3
+---
+pub_date: 2016-11-15
+---
+tags: python,pretty,print,json

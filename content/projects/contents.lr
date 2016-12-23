@@ -14,6 +14,12 @@ Command line tool for pretty printing JSON
 
 <br />
 
+# Subreddit Monitor
+Simple script that parses the RSS of a subreddit and prints a message when a new thread is posted (checking every 5 minutes).  
+[https://github.com/Andrew-Shay/subreddit-monitor](https://github.com/Andrew-Shay/subreddit-monitor)
+
+<br />
+
 # Source of andrewshay.me  
 The source of this website is on [GitHub](https://github.com/Andrew-Shay/andrew_shay_me_website)
 
@@ -24,4 +30,4 @@ The source of this website is on [GitHub](https://github.com/Andrew-Shay/andrew_
 ---
 description: Projects - Neuron, Pretty Print JSON
 ---
-tags: python,open,source,projects,pretty,print,json,neuron,shayconcepts
+tags: python,open,source,projects,pretty,print,json,neuron,shayconcepts,reddit,subreddit,monitor

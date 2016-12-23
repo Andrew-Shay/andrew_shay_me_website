@@ -1,0 +1,15 @@
+title: Subreddit Monitor
+---
+author: Andrew Shay
+---
+body:
+
+I created a really simple script that parses the RSS of a subreddit and prints a message when a new thread is posted (checking every 5 minutes).  
+This was just a script to test this functionality that will be integrated into a larger project.  
+[https://github.com/Andrew-Shay/subreddit-monitor](https://github.com/Andrew-Shay/subreddit-monitor)
+---
+description: Python script to monitor a subreddit and print a message when a new thread is posted.
+---
+pub_date: 2016-12-22
+---
+tags: reddit,subreddit,python

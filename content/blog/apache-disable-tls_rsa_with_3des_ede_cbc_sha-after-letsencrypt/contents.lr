@@ -1,0 +1,23 @@
+title: Apache disable TLS_RSA_WITH_3DES_EDE_CBC_SHA after LetsEncrypt
+---
+author: Andrew Shay
+---
+body:
+
+_This guide is for Apache but might be similar for other web servers_  
+
+If you've just installed  [Let's Encrypt](https://letsencrypt.org/) certificates with [Certbot](https://certbot.eff.org/) on your web server and ran [SSL Server Test]( https://www.ssllabs.com/ssltest/), you might have warning saying your server supports `TLS_RSA_WITH_3DES_EDE_CBC_SHA`.  
+
+To drop support for this protocol you must
+* Open `/etc/letsencrypt/options-ssl-apache.conf`  
+* Delete `:DES-CBC3-SHA` from the `SSLCipherSuite` line.  
+* Restart apache `sudo service apache2 restart`  
+
+Also, here is the default conf file  
+[https://github.com/certbot/certbot/blob/master/certbot-apache/certbot_apache/options-ssl-apache.conf](https://github.com/certbot/certbot/blob/master/certbot-apache/certbot_apache/options-ssl-apache.conf)
+---
+description: Disable TLS_RSA_WITH_3DES_EDE_CBC_SHA after LetsEncrypt
+---
+pub_date: 2017-5-09
+---
+tags: apache,apache2,letsencrypt,lets,encrypt,disable,TLS_RSA_WITH_3DES_EDE_CBC_SHA,3DES

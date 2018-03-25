@@ -1,0 +1,21 @@
+title: Device Checker: New project for detecting changes on Windows
+---
+author: Andrew Shay
+---
+body:
+
+I recently wanted a program to notify me when services, installed programs, and startup programs were added, removed, or changed.  
+I found some wmic commands to give me that information, as well as much more information.  
+
+I created a program to simply gather information about a Windows system and then notify the user when it has changed, and view the differences.  
+
+It is currently released in beta.  
+
+Download:  [https://shayconcepts.com/#device-checker](https://shayconcepts.com/#device-checker)  
+View on GitHub:   [shayConcepts/device-checker](https://github.com/shayConcepts/device-checker)  
+---
+description: Device Checker is software that detects changes to a Windows system
+---
+pub_date: 2018-03-24
+---
+tags: device,checker,windows,software,detect,changes

@@ -2,32 +2,45 @@ title: Projects
 ---
 body:
 
+# Device Checker
+
+Windows application to detect when changes are made to the system.  
+
+Download:  [https://shayconcepts.com/#device-checker](https://shayconcepts.com/#device-checker)  
+View on GitHub:   [shayConcepts/device-checker](https://github.com/shayConcepts/device-checker)  
+<br />
+
 # Neuron
+
 Create desktop applications with Python, HTML and Javascript  
 [https://github.com/Andrew-Shay/Neuron](https://github.com/Andrew-Shay/Neuron)
 
 <br />
 
 # Pretty Print JSON
+
 Command line tool for pretty printing JSON  
 [https://github.com/Andrew-Shay/Pretty-Print-JSON](https://github.com/Andrew-Shay/Pretty-Print-JSON)
 
 <br />
 
 # Subreddit Monitor
+
 Simple script that parses the RSS of a subreddit and prints a message when a new thread is posted (checking every 5 minutes).  
 [https://github.com/Andrew-Shay/subreddit-monitor](https://github.com/Andrew-Shay/subreddit-monitor)
 
 <br />
 
-# Source of andrewshay.me  
+# Source of andrewshay.me
+
 The source of this website is on [GitHub](https://github.com/Andrew-Shay/andrew_shay_me_website)
 
 <br />
 
 # shayConcepts
+
 [shayConcepts](http://shayConcepts.com) is where I distribute my software aimed at the general public.
 ---
-description: Projects - Neuron, Pretty Print JSON
+description: Projects - Device Checker, Neuron, Pretty Print JSON
 ---
-tags: python,open,source,projects,pretty,print,json,neuron,shayconcepts,reddit,subreddit,monitor
+tags: python,open,source,projects,pretty,print,json,neuron,shayconcepts,reddit,subreddit,monitor,device,checker,windows

@@ -1,0 +1,22 @@
+title: How to get the data from msinfo32 with wmic commands
+---
+author: Andrew Shay
+---
+body:
+
+I was recently looking to gather the same data that msinfo32 reports and I found a couple wmic commands that provided me with what I needed.  
+
+The first is a basic wmic command eg `wmic service get /format:list`.  This will output the services on Windows.  
+Run `wmic /?` to see a list of other information you can gather.  
+Other formatting options `/format:table` and `/format:csv`  
+
+
+The second wmic command uses the CIM WMI Provider.  eg `wmic path CIM_LogicialDisk get /value`.  This outputs the logical disks that Windows detects.  
+To find a list of possible options see the MSDN docs [https://msdn.microsoft.com/en-us/library/aa386541.aspx](https://msdn.microsoft.com/en-us/library/aa386541.aspx)
+
+---
+description: How to find similar data that msinfo32 reports
+---
+pub_date: 2018-03-23
+---
+tags: msinfo32,msinfo,windows,wmic,command,cmd

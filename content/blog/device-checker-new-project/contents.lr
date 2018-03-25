@@ -4,7 +4,7 @@ author: Andrew Shay
 ---
 body:
 
-I recently wanted a program to notify me when services, installed programs, and startup programs were added, removed, or changed.  
+I recently wanted software to notify me when services, installed programs, and startup programs were added, removed, or changed.  
 I found some wmic commands to give me that information, as well as much more information.  
 
 I created a program to simply gather information about a Windows system and then notify the user when it has changed, and view the differences.  

@@ -1,7 +1,7 @@
 [project]
 name = andrew_shay
-url = http://andrewshay.me
+url = https://andrewshay.me
 url_style = absolute
 
 [packages]
-lektor-htmlmin = 0.3
+lektor-htmlmin = 1.0.2

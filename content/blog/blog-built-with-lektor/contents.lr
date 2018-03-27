@@ -11,4 +11,7 @@ pub_date: 2016-11-16
 ---
 description: Blog built with Lektor
 ---
-tags: blog,lektor
+tags:
+
+blog
+lektor

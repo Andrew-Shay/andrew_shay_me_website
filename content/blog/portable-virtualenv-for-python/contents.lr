@@ -26,4 +26,8 @@ That’s it. You should be able to activate the ENV.
 ---
 description: Make a virtualenv portable
 ---
-tags: python,virtualenv,portable
+tags:
+
+python
+virtualenv
+portable

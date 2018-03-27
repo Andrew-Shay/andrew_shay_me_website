@@ -1,0 +1,24 @@
+
+
+
+{% extends "layout.html" %} {% block title %}{{ this.title }}{% endblock %} {% block body %}
+
+<div class="main wrapper clearfix">
+
+	
+	<h1>Tag: {{ this.tag }}</h1>
+	<br>
+<h1>Posts:</h1>
+<ul>
+  {% for i in this.items %}
+    <li><a href="{{ i|url }}">{{ i._id }}</a></li>
+  {% else %}
+    <li><em>No items.</em></li>
+  {% endfor %}
+</ul>
+	
+	
+    <div style="clear: both;"></div>
+</div>
+
+{% endblock %}

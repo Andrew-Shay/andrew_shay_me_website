@@ -4,5 +4,9 @@
 {% block body %}
 <div class="main wrapper clearfix">
   {{ render_blog_post(this) }}
+  
+  <br><br>
+  <h1>Comments</h1>
+  <div class="comments">{{ render_disqus_comments() }}</div>
 </div>
 {% endblock %}

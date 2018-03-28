@@ -71,6 +71,7 @@ a {
     color: #48a5ab;
     text-decoration: none;
     outline: none;
+	overflow-wrap: break-word;
 }
 
 .wrapper {

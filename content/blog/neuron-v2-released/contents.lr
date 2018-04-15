@@ -1,0 +1,24 @@
+title: Neuron v2 released
+---
+author: Andrew Shay
+---
+body:
+
+Neuron v2 has been released. It contains the following changes
+
+- Updated to Python 3
+- Uses wxPython
+- Includes script to generate exe and installer (via PyInstaller and NSIS)
+
+[https://github.com/Andrew-Shay/Neuron](https://github.com/Andrew-Shay/Neuron)
+---
+description: Neuron v2 released
+---
+pub_date: 2018-04-14
+---
+tags:
+
+neuron
+python
+pyinstaller
+nsis

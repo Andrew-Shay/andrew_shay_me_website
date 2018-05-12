@@ -6,6 +6,7 @@
 {% block body %}
 <div class="main wrapper clearfix">
   {% for child in this.pagination.items %}
+    {% set child = plugin_read_full_post(child) %}
     {{ render_blog_post(child, from_index=true) }}
     <br />
   {% endfor %}

@@ -1,0 +1,14 @@
+title: lektor plugin: read full post
+---
+author: Andrew Shay
+---
+body:
+
+I have created a [lektor](https://www.getlektor.com/) plugin, [read full post](https://github.com/Andrew-Shay/lektor-read-full-post).  
+It allows blog listing posts to be shortened with a link to the full post.
+---
+pub_date: 2018-05-11
+---
+description: lektor plugin - read full post
+---
+tags: lektor,plugin,read full post, read-full-post

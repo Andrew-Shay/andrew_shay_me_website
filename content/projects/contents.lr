@@ -24,6 +24,13 @@ Command line tool for pretty printing JSON
 
 <br />
 
+# Read Full Post - lektor plugin
+
+[read full post](https://github.com/Andrew-Shay/lektor-read-full-post) is a [lektor](https://www.getlektor.com/) plugin that allows blog listing posts to be shortened with a link to the full post.  
+[https://github.com/Andrew-Shay/lektor-read-full-post](https://github.com/Andrew-Shay/lektor-read-full-post)
+
+<br />
+
 # Subreddit Monitor
 
 Simple script that parses the RSS of a subreddit and prints a message when a new thread is posted (checking every 5 minutes).  
@@ -43,4 +50,4 @@ The source of this website is on [GitHub](https://github.com/Andrew-Shay/andrew_
 ---
 description: Projects - Device Checker, Neuron, Pretty Print JSON
 ---
-tags: python,open,source,projects,pretty,print,json,neuron,shayconcepts,reddit,subreddit,monitor,device,checker,windows
+tags: python,open,source,projects,pretty,print,json,neuron,shayconcepts,reddit,subreddit,monitor,device,checker,windows,lektor,plugin,read-full-post

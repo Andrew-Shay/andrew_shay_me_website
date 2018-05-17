@@ -1,0 +1,184 @@
+title: How to create a lektor plugin and debug it in PyCharm
+---
+author: Andrew Shay
+---
+body:
+
+I recently created by my first Lektor Plugin, [read-full-post](https://github.com/Andrew-Shay/lektor-read-full-post), and wanted to create a getting starting guide for creating a plugin and debugging it in PyCharm.  
+
+In this article we will pull the lektor project, create a plugin that modifies the body of every blog post, debug the plugin in PyCharm and look at some of the data in the debugger.  
+[//]: # (PLUGIN-READ-FULL-POST)
+## Setup
+
+This guide is written using Python 3.6 and Lektor 3.1.  
+We will use `~/Documents` as our working directory. Feel free to use a different directory.
+
+## Clone Lektor project
+
+Clone the lektor project from GitHub. This will let us run `lektor server` via a Python script to use PyCharm's debugger.  
+`$ cd ~/Documents`  
+`$ git clone git@github.com:lektor/lektor.git`
+
+## Create Plugin
+
+`$ cd ~/Documents`  
+`$ mkdir lektor-my-plugin`  
+`$ cd lektor-my-plugin`  
+
+Create file `lektor_my_plugin.py`  
+
+This is the contents  
+```python
+# -*- coding: utf-8 -*-
+
+## My Plugin
+
+from lektor.pluginsystem import Plugin
+
+class MyPluginPlugin(Plugin):
+    name = "My Plugin"
+    description = "My first plugin to change post text"
+
+    @classmethod
+    def mp_modify_post(cls, post):
+        post._data['body'].source += "\n\nMy Plugin!"
+        return post
+
+    def on_setup_env(self, **extra):
+        self.env.jinja_env.globals.update(plugin_my_plugin=self.mp_modify_post)
+```
+
+`on_setup_env` is run when lektor sets up its environment.  Our method is allowing jinja templates to call our other method `mp_modify_post` when `plugin_my_plugin` is called in a template.  We will see this in the template later.  
+
+`mp_modify_post` has parameter `post` which will be of type [Page](https://github.com/lektor/lektor/blob/master/lektor/db.py).  This represents our blog post and contains the data that you see in the admin panel for the post.
+
+Note: I think it's a good idea for plugin methods to have a unique name to prevent a future collision with the `Plugin` base class. So we start our methods with `mp`, which is the abbreviation of our plugin.
+
+Now let's create `~/Documents/lektor-my-plugin/setup.py`  
+
+This is the contents
+```python
+from setuptools import setup
+
+setup(
+    name='lektor-my-plugin',
+    version='0.1',
+    author='YOUR NAME',
+    url='YOUR WEBSITE',
+    long_description='DESCRIPTION',
+    license='MIT',
+    py_modules=['lektor_my_plugin'],
+    entry_points={
+        'lektor.plugins': [
+            'my-plugin = lektor_my_plugin:MyPluginPlugin',
+        ]
+    }
+)
+```
+
+## Create virtualenv and test site
+
+Lets create a virtualenv for our work.  
+`$ cd ~/Documents/lektor-my-plugin`  
+`$ virtualenv PLUGINENV`  
+`$ source ./PLUGINENV/bin/activate` or `$ PLUGINENV\Scripts\activate` for Windows.  
+
+Now let's install lektor real quick and create a test site.  
+`$ pip install lektor`  
+Run quickstart to create a website and add a few blog posts  
+`$ pip uninstall lektor -y`  
+
+## Modify Site Source
+
+We will now modify our lektor site so that the plugin works.  
+
+## templates/blog.html
+
+We will add the line ``{% set child = plugin_my_plugin(child) %}``  
+This processes the blog post.
+
+Here is a full sample of blog.html for reference
+```
+{% extends "layout.html" %}
+{% from "macros/blog.html" import render_blog_post %}
+{% from "macros/pagination.html" import render_pagination %}
+{% block title %}{{ this.title }}{% endblock %}
+{% block body %}
+  {% for child in this.pagination.items %}
+    {% set child = plugin_my_plugin(child) %}
+    {{ render_blog_post(child, from_index=true) }}
+  {% endfor %}
+
+  {{ render_pagination(this.pagination) }}
+{% endblock %}
+```
+
+## Add to PyCharm
+
+Open our new directories in PyCharm: `~/Documents/lektor-my-plugin` and `~/Documents/lektor`.  
+Add `PLUGINENV` to PyCharm and set it as the interpreter for `lektor-my-plugin`.  
+Set `lektor` as a project dependency for `lektor-my-plugin`.  
+
+## Start lektor script
+
+`$ cd ~/Documents/lektor-my-plugin`  
+Create file `start_lektor.py`  
+
+This is the contents
+```python
+from lektor import cli
+
+if __name__ == '__main__':
+    cli.server_cmd()
+```
+
+This script is the equivalent of `lektor server`  
+
+## Pip install projects
+
+With the virtualenv still activated...
+
+`$ cd ~/Documents/lektor`  
+`$ pip install --editable .`  
+
+`$ cd ~/Documents/lektor-my-plugin`  
+`$ pip install --editable .`  
+
+## Start and Debug
+
+Set a break point on the return in `mp_modify_post()`.  
+In PyCharm create a new Configuration that has
+
+* `Script path:` `~/Documents/lektor-my-plugin/start_lektor.py`
+* `Project:` `lektor-my-plugin`
+* `Working directory:` `~/Documents/lektor-my-plugin/LEKTOR-SITE-FOLDER`  
+Click OK.
+
+Debug this configuration.  The lektor server will start and will break for every blog post.  
+Our method is simply taking the content of the blog post and appending the text "My Plugin!" to it.
+
+You can examine the variable `post` to see what you have access to.  
+`post._data` contains the blog post. data, author, twitter handle etc.  
+`post.datamodel.field_map` shows the fields of the blog post.  
+
+## View Results
+
+Go to your test site and view your plugin changes!
+
+## Official Docs
+
+Be sure to checkout the official docs  
+[https://www.getlektor.com/docs/](https://www.getlektor.com/docs/)  
+[https://www.getlektor.com/docs/plugins/](https://www.getlektor.com/docs/plugins/)
+---
+description: How to create a lektor plugin and debug it in PyCharm
+---
+pub_date: 2018-05-16
+---
+tags:
+
+lektor
+plugin
+pycharm
+debug
+article

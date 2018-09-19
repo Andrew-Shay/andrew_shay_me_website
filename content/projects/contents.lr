@@ -31,6 +31,12 @@ Command line tool for pretty printing JSON
 
 <br />
 
+# Simple Strap - lektor theme
+
+[Simple Strap](https://github.com/Andrew-Shay/lektor-theme-simple-strap) is a clean, simple, black and white theme for [lektor](https://www.getlektor.com/) based on [Bootstrap 4](https://getbootstrap.com/).
+
+<br />
+
 # Subreddit Monitor
 
 Simple script that parses the RSS of a subreddit and prints a message when a new thread is posted (checking every 5 minutes).  
@@ -50,4 +56,4 @@ The source of this website is on [GitHub](https://github.com/Andrew-Shay/andrew_
 ---
 description: Projects - Device Checker, Neuron, Pretty Print JSON
 ---
-tags: python,open,source,projects,pretty,print,json,neuron,shayconcepts,reddit,subreddit,monitor,device,checker,windows,lektor,plugin,read-full-post
+tags: python,open,source,projects,pretty,print,json,neuron,shayconcepts,reddit,subreddit,monitor,device,checker,windows,lektor,plugin,read-full-post,simple,strap,bootstrap,theme

@@ -1,0 +1,26 @@
+title: Simple Strap - New theme for lektor
+---
+author: Andrew Shay
+---
+body:
+
+[Simple Strap](https://github.com/Andrew-Shay/lektor-theme-simple-strap) is a clean, simple, black and white theme for [lektor](https://www.getlektor.com/) based on [Bootstrap 4](https://getbootstrap.com/).
+
+[View on GitHub](https://github.com/Andrew-Shay/lektor-theme-simple-strap)  
+Checkout the [demo site](https://andrew-shay.github.io/lektor-theme-simple-strap/)
+
+<img width="100%" src="https://raw.githubusercontent.com/Andrew-Shay/lektor-theme-simple-strap/master/screenshot.png">
+---
+description: Simple Strap is a new simple, black and white theme for lektor
+---
+pub_date: 2018-09-19
+---
+tags:
+
+lektor
+theme
+simple strap
+bootstrap
+lux
+---
+twitter_handle: andrewpshay1

@@ -1,0 +1,472 @@
+title: Quickly setup a minimal Python CI system using Jenkins and GitHub
+---
+author: Andrew Shay
+---
+body:
+
+This article discusses how to quickly and easily setup a Python CI system using GitHub and Jenkins. 
+
+This is useful for anyone who does not have a dedicated CI tool (Travis CI, TeamCity etc.) and just want to get something up and running with minimal effort.
+
+When a GitHub Pull Request is "Opened", "Reopened", or a commit is made, a webhook will be sent to the Jenkins job. The Jenkins job will create a virtual environment, install several tools for running tests and linters, then run those tools against the code base.  The output of the tools will be gathered and posted as a comment to the Pull Request via the GitHub API.
+
+This was created to offer Python projects a simple and easy CI system without having to install and maintain dedicated CI software.  
+
+Requirements: Jenkins with Python 3.6, GitHub  
+[//]: # (PLUGIN-READ-FULL-POST)
+## Setup Jenkins Job
+
+The Jenkins job is very simple and mainly consists of a single shell script.
+
+Create a new Jenkins job and follow the configuration steps below.
+
+### Job Configuration
+
+- Check `This project is parameterized`
+  - Add `String Parameter`
+    - Name = `payload`
+- Check `Execute concurrent builds if necessary`
+- Source Code Management: None
+- Build Triggers
+  - Trigger builds remotely
+    - Authentication Token = `github`
+- Build Environment
+  - Check `Delete workspace before build starts`
+- Build 
+  - Execute shell
+    - *Main Shell Script below*
+- Post Build Actions
+  - Archive artifacts
+    - `htmlcov/, tox_out.txt, coverage_out.txt, radon_cc_out.txt, radon_mi_out.txt, pycode_out.txt, pydoc_out.txt, vulture_out.txt, github_payload.txt, simple_ci.ini, ci.py, test_results.xml`
+  - Publish HTML reports
+    - `HTML directory to archive` = `htmlcov`
+    - `Index pages[s]` = `index.html`
+    - `Index page title[s] (Optional)` = `Code Coverage HTML Report`
+    - `Report title` = `HTML Report`
+    - Publishing Options
+      - Check the following: Keep Past HTML reports, Always link to last build, Allow missing report
+  - Publish JUnit test result report
+    - `Test report XMLs` = `test_results.xml`
+    - Check `Allow empty results`
+
+### Main Shell Script
+
+You need to update the creds for cloning the repo and posting the GitHub Comment.  
+You can also set Jenkins to use key authentication.  
+See the sections `GitHub creds`, `Clone Repo` and `POST GitHub comment`.  
+
+```bash
+#!/bin/bash
+
+FILE="./quick_test.py"
+/bin/cat <<EOM >$FILE
+
+import json
+import os
+
+# -- Get and save GitHub API Payload
+github_data = json.loads(os.environ['payload'])
+github_str = json.dumps(github_data, sort_keys=True, indent=4)
+
+with open("github_payload.txt", "w", encoding="utf-8") as f:
+    f.write(github_str)
+    
+# -- Print payload description
+full_name = github_data['repository']['full_name']
+clone_url = github_data['repository']['clone_url']
+print("#"*60)
+print(full_name)
+print(clone_url)
+
+
+# -- Determine if we want to operate on this payload
+if 'after' in github_data and 'pull_request' in github_data:  # New commit
+    commit = github_data['after']
+    with open("commit.txt", "w", encoding="utf8") as f:
+        f.write(commit)
+    print(commit)
+elif 'action' in github_data and github_data['action'] in ('opened', 'reopened'):  # Opened and Reopened Pull Requests
+    commit = github_data['pull_request']['head']['ref']
+    with open("commit.txt", "w", encoding="utf8") as f:
+        f.write(commit)
+    print(commit)
+
+print("#"*60)
+
+print(github_str)
+
+EOM
+
+FILE="./ci.py"
+/bin/cat <<EOM >$FILE
+
+import subprocess
+import os
+import sys
+import configparser
+import requests
+import json
+import base64
+import shutil
+
+def check_proc(p):
+  if p.returncode:
+      print(p.returncode)
+      print(p.stdout)
+      print(p.stderr)
+      print(sys.exit(1))
+
+
+# -- Get GitHub API Payload
+github_data = json.loads(os.environ['payload'])
+
+
+# -- GitHub creds
+github_user = ""
+github_password = ""
+
+
+# -- Clone Repo
+clone_url = github_data['pull_request']['base']['repo']['clone_url']
+clone_url = clone_url.replace("https://", "")
+clone_url = clone_url.replace("http://", "")
+cmd = f"git clone https://{github_user}:{github_password}@{clone_url}"
+p = subprocess.run(cmd, shell=True)
+check_proc(p)
+
+
+# -- Move repo contents up one level
+folder_name = github_data['pull_request']['base']['repo']['name']
+source = f'./{folder_name}/'
+dest = './'
+files = os.listdir(source)
+for f in files:
+    shutil.move(source+f, dest)
+
+
+# -- Checkout branch or commit
+with open("commit.txt", "r", encoding="utf-8") as f:
+    commit = f.read().strip()
+cmd = "git checkout {}".format(commit)
+print(cmd)
+p = subprocess.run(cmd, shell=True)
+check_proc(p)
+
+
+# -- Install package reqs
+cmd = "pip install -r requirements.txt"
+print(cmd)
+subprocess.run(cmd, shell=True)
+check_proc(p)
+
+
+# -- Install CI reqs
+cmd = "pip install requests radon pydocstyle coverage pycodestyle vulture tox pytest pytest-cov"
+print(cmd)
+subprocess.run(cmd, shell=True)
+check_proc(p)
+
+
+# -- Load simple_ci.ini
+config = configparser.ConfigParser()
+config.read('simple_ci.ini')
+package_path = config['Project']['package']
+package_path = "./" + package_path
+
+
+# -- Static Analysis Tools to run
+tools = [ 
+{
+    "title": "TOX",
+    "cmd": "tox",
+    "file": "tox_out.txt",
+    "enabled": True
+},
+{
+    "title": "COVERAGE",
+    "cmd": "coverage report",
+    "file": "coverage_out.txt",
+    "enabled": True
+},
+{
+    "title": "RADON CC",
+    "cmd": "radon cc --total-average --show-complexity -n C {}".format(package_path),
+    "file": "radon_cc_out.txt",
+    "enabled": True
+},
+{
+    "title": "RADON MI",
+    "cmd": "radon mi --show -n C {}".format(package_path),
+    "file": "radon_mi_out.txt",
+    "enabled": True
+},
+{
+    "title": "PYCODESTYLE",
+    "cmd": "pycodestyle --max-line-length=120 --count --statistics {}".format(package_path),
+    "file": "pycode_out.txt",
+    "enabled": True
+},
+{
+    "title": "PYDOCSTYLE",
+    "cmd": "pydocstyle --add-ignore D400,D401,D205,D105,D107 {}".format(package_path),
+    "file": "pydoc_out.txt",
+    "enabled": True
+},
+{
+    "title": "VULTURE",
+    "cmd": "vulture --min-confidence 80 {}".format(package_path),
+    "file": "vulture_out.txt",
+    "enabled": True
+},
+]
+
+# Update tools from simple_ci.ini
+for tool in tools:
+    section_title = tool['title'].lower()
+    if section_title in config:
+        section = config[section_title]
+        if 'cmd' in section:
+            tool['cmd'] = section['cmd']
+        if 'enabled' in section:
+            enabled = section['enabled'].lower()
+            enabled = enabled == 'true'
+            tool['enabled'] = enabled
+
+
+# -- Runs tools and create GitHub comment body
+github_body = "\`\`\`\n"
+
+for tool in tools:
+    if not tool['enabled']:
+        continue
+    r = subprocess.run(tool['cmd'], shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print(r.returncode)
+    print(r.stdout)
+    print(r.stderr)
+    output = f"########## {tool['title']} ##########\n"
+    output += r.stdout.decode('utf-8') + r.stderr.decode('utf-8')
+    github_body += output
+    github_body += "\n\n\n\n"
+    with open(tool['file'], 'w', encoding="utf-8") as f:
+        f.write(output)
+
+github_body += "\n\`\`\`"
+build_url = os.environ['BUILD_URL']  # Add link to Jenkins build
+github_body += "\n{}".format(build_url)
+
+# -- Add GitHub Commit
+github_body += "\nCommit/Branch: {}".format(commit)
+
+# -- POST GitHub comment
+payload = {
+    "body": github_body,
+}
+headers = {
+    'Content-Type': "application/json",
+    'Cache-Control': "no-cache",
+}
+
+comment_url = github_data['pull_request']['_links']['comments']['href']
+auth = ('GITHUB API USERNAME', 'GITHUB API PASSWORD')
+response = requests.post(comment_url, json=payload, headers=headers, auth=auth)
+print(response.text)    
+
+
+EOM
+
+python3 ./quick_test.py
+
+
+FILE="./commit.txt"     
+if [ -f $FILE ]; then
+  virtualenv env
+  . ./env/bin/activate
+  
+  pip install requests
+  
+  python3 ./ci.py
+fi
+```
+
+## Python Project Setup
+
+This CI system requires a specific project structure as well as a file called `simple_ci.ini` that allows the CI system to be configured.  
+
+### Project Structure
+
+The project will be structured like the [pypa/sample project](https://github.com/pypa/sampleproject).  
+The following should be in the root of the repo:  
+
+* Directory containing the project source code (`PROJECT_SRC/`)
+* Directory containing the tests for the project (`tests/`)
+* `simple_ci.ini` (Discussed later)
+* `tox.ini` (Discussed later)
+* `requirements.txt`
+* `setup.py`
+
+Here is a sample layout of a possible project
+```
+PROJECT_SRC/
+  __init__.py
+  __main__.py
+tests/
+simple_ci.ini
+requirements.txt
+setup.py
+tox.ini
+LICENSE.txt
+README.md
+```
+
+### Create simple_ci.ini
+
+This is a simple file that configures the CI system.  
+There is very little that is required, but more can be added to configure each tool. 
+It should be in the root of the repo.
+
+#### Minimal Required sample
+
+Here is the minimal required sample, where `PROJECT_SRC` is the name of the directory containing the Python project source code.
+
+`simple_ci.ini`
+```ini
+[Project]
+package = PROJECT_SRC
+```
+
+#### Full Configuration Sample
+
+Here is a sample that shows the full possible configuration.  
+It shows the commands that the CI system runs by default.  
+
+Note: In this sample, `{}` is replaced with `Project -> ./package` however you need to fully specify the command.
+
+`simple_ci.ini`
+```ini
+[Project]
+package = my_project
+
+[tox]
+cmd = tox
+enable = True
+
+[coverage]
+cmd = coverage report
+enable = True
+
+[radon cc]
+cmd = radon cc --total-average --show-complexity -n C {}
+enable = True
+
+[radon mi]
+cmd = radon mi --show -n C {}
+enable = True
+
+[pycodestyle]
+cmd = pycodestyle --max-line-length=120 --count --statistics {}
+enable = True
+
+[pydocstyle]
+cmd = pydocstyle --add-ignore D400,D401,D205,D105,D107 {}
+enable = True
+
+[vulture]
+cmd = vulture --min-confidence 80 {}
+enable = True
+```
+
+#### simple_ci.ini Description
+
+`simple_ci.ini`
+```ini
+[Project]
+package = Name of directory in the root of the repo containing the python source code for the project (PROJECT_SRC)
+
+[tool]
+cmd = CLI command to run for tool
+enable = True or False. When False, the tool will not run and no output will be shown for the tool.
+```
+
+### Setup tox
+
+[Tox](https://tox.readthedocs.io/en/latest/) is a tool used to execute tests against multiple python environments.  
+Your project should have `tox.ini` in the root of the repo.
+
+Here is a minimal sample (change `--cov` to equal to name of the project's source package, PROJECT_SRC)
+```ini
+[tox]
+envlist = py36
+
+[testenv]
+install_command = pip install {opts} {packages}
+commands =
+    pytest --tb=native --cov=PROJECT_SRC --junit-xml=test_results.xml --cov-report html tests/
+``` 
+
+## Setup GitHub Webhook
+
+On your repo webpage on GitHub, follow the following steps to configure the Webhook.
+
+* Settings tab > Hooks & Services
+* Add webhook
+* `PayLoad URL` = `JENKINS_JOB_URL/buildWithParameters?token=github`
+* `Content Type` = `form urlencoded`
+* `Secret` = `github`
+* Select `Let me select individual events.`
+  * Check `Pull request`
+* Check `Active`
+* Click `Add webhook`
+
+## Tools Executed
+
+* `tox` - Executes tests - [https://tox.readthedocs.io/en/latest/](https://tox.readthedocs.io/en/latest/)
+* `coverage` (via tox) - Code coverage - [https://coverage.readthedocs.io/en/coverage-4.5.1a/](https://coverage.readthedocs.io/en/coverage-4.5.1a/)
+* `radon` - Code Complexity - [http://radon.readthedocs.io/en/latest/](http://radon.readthedocs.io/en/latest/)
+* `pycodestyle` - PEP8 conformity - [https://github.com/PyCQA/pycodestyle](https://github.com/PyCQA/pycodestyle)
+* `pydocstyle` - Docstring convention conformity - [https://github.com/PyCQA/pydocstyle](https://github.com/PyCQA/pydocstyle)
+* `vulture` - Unused code  - [https://github.com/jendrikseipp/vulture](https://github.com/jendrikseipp/vulture)
+
+## What the Jenkins Job saves
+
+For each build you can view the following
+
+* Code Coverage HTML report via `HTML Report` link on the left menu
+* JUNIT test results html report via `Test Result` link on the left menu
+* The following files are saved as Jenkins `Build Artifacts` which can be seen on the middle of the
+page for build
+  * `simple_ci.ini`
+  * `github_payload.txt` - GitHub API data
+  * Output of each tool e.g. `tox_out.txt`, `radon_cc.out` etc
+  * and more
+
+## How it works
+
+* GitHub webhook sends Pull Request JSON payload to Jenkins job
+* Jenkins job
+  * Clones repo
+  * Checkouts commit/branch
+  * Loops through tools to execute
+  * Appends tool output to GitHub comment body
+  * Saves output of each tool to own file
+  * Saves output of each tool as Jenkins build artifacts (as well as other files)
+  * Posts GitHub comment to Pull Request
+
+## Potential Future Enhancements
+
+- Run manually with a given GitHub URL and commit/branch
+- Support other project structures eg All code in root repo
+- Editing the GitHub comment instead of making a new comment
+
+---
+description: Quickly setup a minimal Python CI system using Jenkins and GitHub
+---
+pub_date: 2018-09-27
+---
+tags:
+
+python
+github
+jenkins
+ci
+continuous integration
+article

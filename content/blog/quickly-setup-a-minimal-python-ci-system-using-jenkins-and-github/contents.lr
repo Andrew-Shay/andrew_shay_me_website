@@ -57,6 +57,8 @@ See the sections `GitHub creds`, `Clone Repo` and `POST GitHub comment`.
 
 ```bash
 #!/bin/bash
+# Andrew Shay
+# License MIT
 
 FILE="./quick_test.py"
 /bin/cat <<EOM >$FILE

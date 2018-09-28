@@ -55,6 +55,8 @@ You need to update the creds for cloning the repo and posting the GitHub Comment
 You can also set Jenkins to use key authentication.  
 See the sections `GitHub creds`, `Clone Repo` and `POST GitHub comment`.  
 
+[View script on GitHub](https://github.com/Andrew-Shay/python-ci-system)
+
 ```bash
 #!/bin/bash
 # Andrew Shay

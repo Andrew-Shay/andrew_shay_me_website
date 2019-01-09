@@ -1,0 +1,124 @@
+title: TDD vs BDD. Does TDD test implementation or behavior?
+---
+author: Andrew Shay
+---
+body:
+
+About a year ago I wanted to learn more about good testing habits and specifically Test Driven Development (TDD) because I had heard about it so much.  While reading about these topics I came across Behavior Driven Development (BDD).  I came to the conclusion that there is confusion around TDD and especially when compared to BDD, however TDD is simple and a highly effective development strategy when understood correctly.
+[//]: # (PLUGIN-READ-FULL-POST)
+The first thing I did when trying to learn more about TDD was to of course Google it.  I read the Wikipedia page, Stack Overflow questions, development/testing websites' explanations, and people's personal blogs.  Someone looking up TDD as I did will quickly find many contradictions and inaccurate interpretations.  Many of the inaccuracies are asserted as truth, which makes it hard to determine what is correct.
+
+Listed below are the 5 most common statements that I found about TDD:
+
+1) TDD tests implementation  
+2) TDD tests behavior  
+3) TDD means writing a test for every function  
+4) TDD tests implementation and BDD tests behavior  
+5) BDD is an improved version of TDD  
+
+I am going to go through these assertions and discuss where confusion around them comes from, why I think some are simply incorrect, and why some depend on the context of development.  
+
+After reading conflicting opinions on TDD, I decided the best thing to do is read the commonly recognized source on TDD, "Test Driven Development: By Example by Kent Beck".  I felt the aspects of TDD became clear and obvious, after reading "Test Driven Development: By Example".  My discussion and thoughts will be based on what I read in this book.  This book is my "source of truth" on the topic of TDD.  
+
+Before getting into my discussion I will list my sources from the book that state TDD is for testing **behavior**.  
+
+> 1) p.4 _"What behavior will we need to produce the revised report? Put another way, what set of tests, when passed, will demonstrate the presence of code we are confident will compute the report correctly?"_
+
+By *page 4* Kent has explicitly stated we need to be testing behavior.  
+
+> 2) p.11 #1: _"Invent the interface you wish you had. Include all of the elements in the story that you imagine will be necessary to calculate the right answers."_
+
+We are thinking about the _interface_, the behavior. We are not thinking about the _implementation_.  
+We are thinking about how to "calculate the right answer", the _behavior_.
+
+> 3) p.14 _"First we can talk about whether the system should work like this or like that. Once we decide on the correct behavior, we can talk about the best way of achieving that behavior."_
+
+Again stating we need to be thinking about the _behavior_ and how the system _should work_.
+
+> 4) p.16 paragraph 2: _"You aren't thinking about the implementation of equals(), are you?...I'm thinking about how to test equality."_
+
+Explicitly stating to *not* think about the _implementation_.
+
+> 5) p.39 paragraph 2: _"How do we want to implement currencies at the moment?...I'll rephrase: How do we want to test for currencies at the moment?"_
+
+Emphasizing to not think about the implementation. Think about how to test the behavior.
+
+> 6) p.62 middle of page: _"The test above is not one I would expect to live a long time. It is deeply concerned with the implementation of our operation, rather than its externally visible behavior"_
+
+Tests that test implementation do not last.  The tests need to think about the _behavior_.
+
+> 7) p.71 Bullet 2: "Introduced a private helper class without distinct tests of its own."
+
+We do not write tests for every function and class.
+
+> 8) p.103 "Now we are ready to implement tearDown(). Got you! Now we are ready to test for tearDown:"
+
+Test the behavior.
+
+Now onto my discussion and thoughts...
+
+The biggest overarching question/concern around TDD is whether it's testing the implementation or behavior.  
+I think the _word_ chosen to answer this question depends on the context of development, and TDD is usually discussed around developing unit tests.  
+If the context is around developer unit tests: The answer is _behavior_.  
+If the context is around higher level tests like system tests, end-to-end tests, etc.: The answer is _implementation_.  
+
+Here are some examples of the context to make sure I'm clear.  
+Let's say we are building a calculator application with a GUI, and let's only consider the following two sets of tests.  
+1) We will have some unit tests to test functions like add(x, y): x plus y, subtract(x, y): x minus y, multiply(x, y) and divide(x, y).  
+2) We will have some UI tests to test the GUI when the user is using the application (if the user presses "+" then they see the addition of the two numbers).  
+
+When working on our unit tests for add, subtract, multiply and divide, we want to make sure their _behavior_ is correct.  
+Our test should be "When I call subtract(5, 1), I get 4".  
+We _do not_ test "When I call subtract(5, 1), I get 4, and subtract() called add(x, negative y)."  
+With the above two examples, the first one tests the behavior of the subtract function.  That is what we care about.  We want it to be correct.  
+The second example is now dealing with the _implementation_. We do not care if subtract used "add(x, (y * -1))" or if it used "x - y", or "x + -y".  
+
+One of the purposes of TDD is to give confidence that your code is correct after refactoring, because you will rerun your tests and if all your tests pass, then everything is still working correctly.    
+So if our test includes asserting "add() was called one time", what happens when we refactor subtract() to use "x + -y" instead of calling add()?  
+Our test fails!  Well then subtract() is broken right? Our test failed, so it must be broken. Nope. subtract() still works 100% correctly. Now we waste our time examining why it failed and updating this failing test.  
+What happens if we update the test to reflect this new specific implementation (somehow), then we refactor _AGAIN_ to "x - y"?  The test breaks again, but subtract() is still working! subtract()'s _behavior_ never changed.  
+When our unit tests are testing implementation, we end up testing _what the system does_, not _what the behavior of the system should be_.  
+
+The above makes a strong case for testing _behavior_ and NOT _implementation_.  
+However, when we discuss the UI tests, _I_ think TDD can be considered to be testing the _implementation_ because TDD is usually discussed with respect to the developer's unit tests, and the code being tested by the unit tests are _implementing_ the functionality of the UI.  
+This is where I think *some* of the confusion can arise. Even though the _word_ chosen can change, how the code is tested, doesn't change.
+
+So far the above has directly addressed the main statements #1 and #2.  
+
+How about #3, "TDD means writing a test for every function"? This is incorrect.  
+We care about testing the _behavior_.  We just need enough tests, testing enough functions, that give us confidence that the behavior of our system is correct.  
+Let's say we remove all functionality from the calculator except multiply.  So our UI no longer has +, -, and /.  
+Let's say we decide to implement multiply(x, y) by using a for loop and continually calling add().  
+If we wrote a test for every function we would have a test(s) for add().  
+Now we decide to refactor multiply() so it calls "x * y" instead, and we delete add() because we do not need it anymore.  
+We rerun our tests and what happens? Our tests fail, but the behavior of multiplying has not changed.  It is the same scenario we saw above.  
+Simply writing a test(s) for _every function_ is testing the _implementation_.  
+This does not increase our confidence that the behavior of the system has not changed.  
+
+Now we are on to main statements #4 and #5, "TDD tests implementation and BDD tests behavior" and "BDD is an improved version of TDD".  
+You can find different definitions of BDD, but these statements are comparing BDD to TDD so the context is around the developer unit tests (especially since some claim BDD is an improved version of TDD).  These statements are incorrect.  
+TDD _does_ test behavior. BDD is not improving anything.  BDD certainly improves test development for people who do not understand TDD correctly.  
+Now, some people might define BDD differently.  They might say BDD is not only the developer who is involved and BDD tests are not developer unit tests.  That is not what I am comparing and discussing here.    
+
+Why is there confusion around what TDD is testing and how?  
+Maybe Kent should have called it Behavior Test Driven Development instead.  
+
+After I read Kent's book everything clicked.  I had taken people's bad advice and wrote tests for _every function_ and ran into problems and slow downs during refactoring.  I questioned if asserting method call counts was really doing anything.  Turns out I was wasting my time. I had been testing implementation instead of behavior.  
+
+I highly recommend "Test Driven Development: By Example by Kent Beck" to anyone who has not read it.  He thoroughly covers TDD by building some example projects and it's very helpful to see the process. He also goes over general testing tips and good code quality tips.
+
+What are your thoughts?
+Let me know.  
+---
+description: TDD vs BDD. Does TDD test implementation or behavior?
+---
+pub_date: 2019-01-09
+---
+tags:
+
+tdd
+bdd
+test driven development
+behavior driven development
+kent beck
+

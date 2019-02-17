@@ -1,0 +1,87 @@
+title: Enterprise Test Automation: The Foundation
+---
+author: Andrew Shay
+---
+body:
+
+During my professional career as a Software Engineer I have worked in Enterprise Test Automation (ETA).  
+In my short time in ETA I have seen absolutely awful automation, and highly effective automation with a strong strategy.  
+
+In this article I will layout the foundation for strong ETA that will lead to success.  
+
+Audience for this article: Anyone who is new to Enterprise Test Automation or preparing to setup an automation team or plan. If you are experienced with ETA, then you won't get much from this.
+[//]: # (PLUGIN-READ-FULL-POST)
+## Central Automation Team - CAT
+
+To start, I have found that having successful ETA requires a dedicated team.  This team will be dedicated to building automation that can be used by all other product automation teams, setting standards, and providing development guidance. I call this team, Central Automation Team (CAT).  
+
+Without a CAT, automation efforts tend to stagnate or fail.  Much of the work that is created by one product automation team is also needed (or can be used) by other teams as well. Everyone ends up spending time creating the same things.  The CAT can build these projects so all other teams can benefit and stay consistent.  
+Another issue I observed was multiple teams forking projects, making changes to support their immediate needs, causing everyone to get out of sync.  This can be prevented with a CAT.
+
+## Components of Enterprise Test Automation
+
+I have found that ETA consists of 5 major "components".  These components makeup the life cycle of ETA and are required for success at scale.  
+
+![ETA Life Cycle](eta_life_cycle.png)
+
+Here's my description of the components:  
+
+**Configuration Management**: Maintaining the operating systems, virtual machine templates, physical machines etc. that need to be tested on.  
+Common Tools: [SaltStack](https://www.saltstack.com/), [Ansible](https://www.ansible.com/), [Puppet](https://puppet.com/)
+
+**Deployment & Pipeline**: Deploying environment, gathering test framework and tests, executing tests, reporting results.  
+Common Tools: [Terraform](https://www.hashicorp.com/products/terraform), [Jenkins](https://jenkins.io/), [TeamCity](https://www.jetbrains.com/teamcity/), [BuildBot](https://buildbot.net/)
+
+**Test Framework**: Framework/Package that contains the functionality for interacting with your products. Needed for your Automated Tests.  
+Common Tools: [Robot](https://robotframework.org/), [Selenium](https://docs.seleniumhq.org/), custom framework
+
+**Automated Tests**: The automated tests for the products under test.  Automated tests will use the Test Framework.  
+Common Tools: [Robot](https://robotframework.org/), [xUnit tests](https://en.wikipedia.org/wiki/XUnit)
+
+**Reporting**: Location for reporting and analyzing test results.  
+Common Tools: [TestRail](https://www.gurock.com/testrail), [Splunk](https://www.splunk.com/), [Kibana](https://www.elastic.co/products/kibana)
+
+I identified the above as separate components based on a few factors.  
+- Each component requires significant effort and attention.  
+- An engineer with the capability to design and build one component may not have the ability or desire to create another.  
+- Issues and reliability tend to be grouped around these components.
+
+I think each component requires someone whose primary responsibility is maintaining it.  It's important that the person responsible for it, is interested in working on it. If the person has no interest then the quality will be poor and they will always work on anything else that comes up.  This causes the component to suffer in code quality and reliability. One poor component hinders the entire workflow.  
+
+Treat ETA as another software product. It's just not a product that you're selling outside your company.
+
+## Output and Expectations
+
+It's important to remember that the output of this process is the test results. Product Managers need the status of the automation. If any one component fails then there are no results. Each component must be maintained.
+
+Anyone working on ETA will be aware of these components and know which components are good and which aren't so good.  
+However anyone outside of ETA may see it all as just one "automation".  This can be a problem.  
+
+![ETA Automation](eta_automation.png)
+
+Let's say the Configuration Management component is very poor.  
+Every other component can be amazing, but if there aren't any operating systems/virtual machine templates to run the automation on, it's all pointless.  There are no test results.  All of ETA will be seen as unreliable and not working. This risks getting your team shut down, restructured, or started over. This all wastes time.
+
+I think it would be a good idea for the CAT lead to track the status/reliability of the ETA components.  This ensures that everyone is aware where the issues are to help manage additional resources.
+
+## In Summary
+
+- Create a Central Automation Team
+- Dedicate resources to all components
+- Ensure all components are reliable
+- Document status of each component
+- Treat ETA as software you would be selling to customers
+
+
+What has worked for you?
+---
+description: Creating the foundation for successful Enterprise Test Automation
+---
+pub_date: 2019-02-17
+---
+tags:
+
+enterprise
+test
+automation
+article

@@ -1,0 +1,66 @@
+body {
+  background-color: rgb(240, 240, 240);
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 900px;
+  }
+}
+
+.site-header-name {
+  font-size: 2.5rem;
+}
+
+.site-header-name:hover {
+  text-decoration: none;
+}
+
+.nav-bar {
+  margin-bottom: 2em;
+  border-top: 1px solid #e5e5e5;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+nav > a {
+  color: rgb(190, 190, 190);
+  font-family: 'Raleway', 'sans-serif';
+  text-shadow: 0px 0px 3px #F8F8F8;
+}
+
+nav > a:hover {
+  color: #48A5AB;
+  text-decoration: none;
+}
+
+.blog-split {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.blog-post-title:hover {
+  text-decoration: none;
+}
+
+.site-pagination {
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+}
+
+.site-footer {
+  padding: 2rem 0;
+  color: rgb(190, 190, 190);
+  text-align: center;
+  background-color: #f7f7f9;
+}
+
+.container {
+  background-color: #F8F8F8;
+  box-shadow: 0px 0px 15px rgb(190, 190, 190);
+
+}
+
+#inner-wrap {
+  margin-left: 0.5em;
+}
+

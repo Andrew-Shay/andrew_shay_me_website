@@ -1,24 +1,20 @@
 {% macro render_blog_post(post, from_index=false) %}
-  <div class="blog-post">
-  {% if from_index %}
-    <h1><a href="{{ post|url }}">{{ post.title }}</a></h1>
-  {% else %}
-    <h1>{{ post.title }}</h2>
-  {% endif %}
-  <p class="meta">
-    written by
-    {% if post.twitter_handle %}
-      <a href="https://twitter.com/{{ post.twitter_handle
-        }}">{{ post.author or post.twitter_handle }}</a>
-    {% else %}
-      {{ post.author }}
-    {% endif %}
-    on {{ post.pub_date }}
-  </p>
-  {% if from_index %}
-      {{ post.body_short }}
-  {% else %}
-      {{ post.body }}
-  {% endif %}
+
+
+
+<div class="blog-post">
+    <a class="blog-post-title" href="{{ post|url }}"><h1 class="blog-post-title">{{ post.title }}</h1></a>
+    <p class="font-weight-light small" style="margin-top: -0.5rem;">written by {{ post.author }} on {{ post.pub_date }}</p>
+
+    {% if from_index %}
+    {{ post.body_short }}
+{% else %}
+    {{ post.body }}
+{% endif %}
+
+
   </div>
+  <!-- END BLOG POST -->
+
+
 {% endmacro %}

@@ -4,18 +4,12 @@
 {% block title %}{{ this.title }}{% endblock %}
 {% block body %}
 
-
 {% for child in this.pagination.items %}
 {% set child = plugin_read_full_post(child) %}
 {{ render_blog_post(child, from_index=true) }}
 <br />
 {% endfor %}
 {{ render_pagination(this.pagination) }}
-
-
-
-
-
 
 </div>
 <!-- END MAIN BODY -->
@@ -33,11 +27,10 @@
     <div class="mb-3">
         <h4>Follow Me</h4>
         <ol class="list-unstyled">
-            <li><a href="#">LinkedIn</a></li>
-            <li><a href="#">Twitter</a></li>
-            <li><a href="#">Gitter</a></li>
-            <li><a href="#">GitHub</a></li>
-            <li><a href="#">RSS</a></li>
+            <li><a href="https://www.linkedin.com/in/andrew-shay-aa73b98b">LinkedIn</a></li>
+            <li><a href="https://github.com/Andrew-Shay">GitHub</a></li>
+            <li><a href="https://gitter.im/andrew-shay/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link">Gitter</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
         </ol>
     </div>
 </aside>

@@ -8,15 +8,17 @@
     <meta name="description" content="{{ this.description }}">
     <meta name="author" content="Andrew Shay">
     <meta name="keywords" content="andrew,shay,{{ this.tags }}">
+    <meta http-equiv="Cache-control" content="public">
 
     <meta name="theme-color" content="#48a5ab">
     <link rel="icon" sizes="192x192" href="{{ '/static/img/apple-touch-icon.png'|url }}">
     <link rel="shortcut icon" href="{{ '/static/img/favicon.ico'|url }}">
     <link rel="apple-touch-icon" href="{{ '/static/img/apple-touch-icon.png'|url }}">
 
-    <link rel="stylesheet" href="{{ '/static/css/custom.css'|url }}">
+
     <link rel="stylesheet" href="{{ '/static/css/bootstrap.min.css'|url }}">
     <link rel="stylesheet" href="{{ get_pygments_stylesheet()|url }}">
+    <link rel="stylesheet" href="{{ '/static/css/custom.css'|url }}">
     <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Raleway' type='text/css'>
     <title>{{ this.title }} — andrewshay.me</title>
 
@@ -36,12 +38,12 @@
 
 
 <body>
-    <main role="main" class="container">
+    <main class="container">
         <div id="inner-wrap">
             <!-- HEADER -->
-            <div class="d-flex flex-column flex-md-row align-items-center" style="padding: 2rem 0 4rem 0;">
+            <div class="d-flex flex-column flex-md-row align-items-center" style="padding: 2rem 0 3rem 0;">
                 <a class="my-0 mr-md-auto" href="/blog">
-                <img style="max-width: 350px;" alt="print('andrewshay.me')"
+                <img style="width: 350px; max-width: 100%;" alt="print('andrewshay.me')"
                     src="{{ '/static/img/logo.png'|url }}">
                 </a>
                 <nav class="my-2 my-md-0 mr-md-3">
@@ -53,7 +55,7 @@
             <!-- END HEADER -->
 
             <!-- main-row -->
-            <div class="row main-row">
+            <div class="row">
 
                 <!-- main body -->
                 <div class="col">
@@ -72,10 +74,9 @@
         </div>
         <!--inner-wrap-->
     </main>
-
-    <script src="./js/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
-    <script src="./js/popper.min.js" crossorigin="anonymous"></script>
-    <script src="./js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script src="{{ '/static/js/jquery-3.3.1.slim.min.js'|url }}" crossorigin="anonymous"></script>
+    <script src="{{ '/static/js/popper.min.js'|url }}" crossorigin="anonymous"></script>
+    <script src="{{ '/static/js/bootstrap.min.js'|url }}" crossorigin="anonymous"></script>
 
 </body>
 </html>

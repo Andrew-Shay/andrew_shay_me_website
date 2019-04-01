@@ -1,5 +1,38 @@
 body {
-  background-color: rgb(240, 240, 240);
+  background-color: rgb(240, 240, 240) !important;
+}
+
+a {
+  outline: none;
+}
+
+pre {
+  white-space: pre-wrap;
+  word-break: normal;
+}
+
+img {
+  max-width: 100%;
+}
+
+code {
+  white-space: pre-wrap;
+  word-break: break-all;
+  display: inline-block;
+  max-width: 100%;
+  background-color: #F0F0F0;
+  box-sizing: border-box;
+  padding: 0.1rem;
+}
+
+::-moz-selection {
+  color: white;
+  background: #48A5AB;
+}
+
+::selection {
+  color: white;
+  background: #48A5AB;
 }
 
 @media (min-width: 992px) {
@@ -24,7 +57,7 @@ body {
 
 nav > a {
   color: rgb(190, 190, 190);
-  font-family: 'Raleway', 'sans-serif';
+  font-family: 'Raleway', 'Verdana', Sans-Serif;
   text-shadow: 0px 0px 3px #F8F8F8;
 }
 
@@ -60,7 +93,7 @@ nav > a:hover {
 
 }
 
-#inner-wrap {
-  margin-left: 0.5em;
+/* pygments */
+.hll > pre {
+  padding: 1rem 1rem 1rem 1rem;
 }
-

@@ -1,5 +1,6 @@
 body {
   background-color: rgb(240, 240, 240) !important;
+  word-break: break-word;
 }
 
 a {
@@ -8,7 +9,6 @@ a {
 
 pre {
   white-space: pre-wrap;
-  word-break: normal;
 }
 
 img {
@@ -17,12 +17,12 @@ img {
 
 code {
   white-space: pre-wrap;
-  word-break: break-all;
+  word-break: break-word;
   display: inline-block;
   max-width: 100%;
   background-color: #F0F0F0;
   box-sizing: border-box;
-  padding: 0.1rem;
+  padding: 0.1rem 0.3rem 0.1rem 0.3rem;
 }
 
 ::-moz-selection {

@@ -7,7 +7,7 @@
 {% for child in this.pagination.items %}
 {% set child = plugin_read_full_post(child) %}
 {{ render_blog_post(child, from_index=true) }}
-<br />
+<div style="padding: 3rem 0rem 0rem 0rem;"></div>
 {% endfor %}
 {{ render_pagination(this.pagination) }}
 

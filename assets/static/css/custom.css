@@ -76,8 +76,12 @@ nav > a:hover {
 }
 
 .site-pagination {
-  margin-top: 4rem;
+  margin-top: 0rem;
   margin-bottom: 4rem;
+}
+
+.site-pagination > a {
+  font-family: 'Verdana', Sans-Serif;
 }
 
 .site-footer {
@@ -97,3 +101,4 @@ nav > a:hover {
 .hll > pre {
   padding: 1rem 1rem 1rem 1rem;
 }
+/* end pygments */

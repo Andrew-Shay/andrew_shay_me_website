@@ -1,5 +1,5 @@
 {% macro render_pagination(pagination) %}
-<nav class="site-pagination">
+<div class="site-pagination">
   {% if pagination.has_prev %}
   <a class="btn btn-primary" href="{{ pagination.prev|url }}">Previous</a>
   {% else %}
@@ -11,5 +11,5 @@
   {% else %}
   <a class="btn btn-secondary disabled" href="#">Next</a>
   {% endif %}
-</nav>
+</div>
 {% endmacro %}

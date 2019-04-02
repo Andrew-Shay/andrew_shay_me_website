@@ -1,6 +1,7 @@
 body {
   background-color: rgb(240, 240, 240) !important;
   word-break: break-word;
+  word-wrap: break-word;
 }
 
 a {

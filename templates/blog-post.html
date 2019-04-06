@@ -10,7 +10,7 @@
 {% if this.tags %}
 <h3>Tags</h3>
   {% for t in this.tags -%}
-      <a href="{{ ('/blog@tag/' ~ t.lower())|url }}">{{ t }}</a>, 
+      <a href="{{ ('/blog@tag/' ~ t.lower())|url }}">{{ t }}</a>&nbsp;&nbsp;
   {% endfor %}
 {% endif %}
 

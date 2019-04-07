@@ -22,36 +22,52 @@ After reading conflicting opinions on TDD, I decided the best thing to do is rea
 
 Before getting into my discussion I will list my sources from the book that state TDD is for testing **behavior**.  
 
-> 1) p.4 _"What behavior will we need to produce the revised report? Put another way, what set of tests, when passed, will demonstrate the presence of code we are confident will compute the report correctly?"_
+1) page 4 
+
+`What behavior will we need to produce the revised report? Put another way, what set of tests, when passed, will demonstrate the presence of code we are confident will compute the report correctly?`
 
 By *page 4* Kent has explicitly stated we need to be testing behavior.  
 
-> 2) p.11 #1: _"Invent the interface you wish you had. Include all of the elements in the story that you imagine will be necessary to calculate the right answers."_
+2) page 11 #1
+
+`Invent the interface you wish you had. Include all of the elements in the story that you imagine will be necessary to calculate the right answers.`
 
 We are thinking about the _interface_, the behavior. We are not thinking about the _implementation_.  
 We are thinking about how to "calculate the right answer", the _behavior_.
 
-> 3) p.14 _"First we can talk about whether the system should work like this or like that. Once we decide on the correct behavior, we can talk about the best way of achieving that behavior."_
+3) page 14 
+
+`First we can talk about whether the system should work like this or like that. Once we decide on the correct behavior, we can talk about the best way of achieving that behavior.`
 
 Again stating we need to be thinking about the _behavior_ and how the system _should work_.
 
-> 4) p.16 paragraph 2: _"You aren't thinking about the implementation of equals(), are you?...I'm thinking about how to test equality."_
+4) page 16 paragraph 2
+
+`You aren't thinking about the implementation of equals(), are you?...I'm thinking about how to test equality.`
 
 Explicitly stating to *not* think about the _implementation_.
 
-> 5) p.39 paragraph 2: _"How do we want to implement currencies at the moment?...I'll rephrase: How do we want to test for currencies at the moment?"_
+5) page 39 paragraph 2
+
+`How do we want to implement currencies at the moment?...I'll rephrase: How do we want to test for currencies at the moment?`
 
 Emphasizing to not think about the implementation. Think about how to test the behavior.
 
-> 6) p.62 middle of page: _"The test above is not one I would expect to live a long time. It is deeply concerned with the implementation of our operation, rather than its externally visible behavior"_
+6) page 62 middle of page
+
+`The test above is not one I would expect to live a long time. It is deeply concerned with the implementation of our operation, rather than its externally visible behavior`
 
 Tests that test implementation do not last.  The tests need to think about the _behavior_.
 
-> 7) p.71 Bullet 2: "Introduced a private helper class without distinct tests of its own."
+7) page 71 Bullet 2
+
+`Introduced a private helper class without distinct tests of its own.`
 
 We do not write tests for every function and class.
 
-> 8) p.103 "Now we are ready to implement tearDown(). Got you! Now we are ready to test for tearDown:"
+8) page 103 
+
+`Now we are ready to implement tearDown(). Got you! Now we are ready to test for tearDown:`
 
 Test the behavior.
 
@@ -116,9 +132,11 @@ pub_date: 2019-01-09
 ---
 tags:
 
+article
 tdd
 bdd
 test driven development
 behavior driven development
+testing
 kent beck
 

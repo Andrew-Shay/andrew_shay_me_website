@@ -1,8 +1,9 @@
-{% extends "layout.html" %} {% block title %}{{ this.title }}{% endblock %} {% block body %}
+{% extends "layout.html" %}
+{% block title %}{{ this.title }}{% endblock %}
+{% block body %}
+{{ this.body }}
 
-<div class="main wrapper clearfix">
-    {{ this.body }}
-    <div style="clear: both;"></div>
 </div>
+<!-- end main body -->
 
 {% endblock %}

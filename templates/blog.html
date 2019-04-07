@@ -1,17 +1,38 @@
 {% extends "layout.html" %}
-
 {% from "macros/blog.html" import render_blog_post %}
 {% from "macros/pagination.html" import render_pagination %}
 {% block title %}{{ this.title }}{% endblock %}
 {% block body %}
-<div class="main wrapper clearfix">
-  {% for child in this.pagination.items %}
-    {% set child = plugin_read_full_post(child) %}
-    {{ render_blog_post(child, from_index=true) }}
-    <br />
-  {% endfor %}
-  {{ render_pagination(this.pagination) }}
+
+{% for child in this.pagination.items %}
+{% set child = plugin_read_full_post(child) %}
+{{ render_blog_post(child, from_index=true) }}
+<div style="padding: 3rem 0rem 0rem 0rem;"></div>
+{% endfor %}
+{{ render_pagination(this.pagination) }}
+
 </div>
+<!-- END MAIN BODY -->
 
+<!-- SIDEBAR -->
+<aside class="col-md-3">
+    <div class="mb-3">
+        <h4>About</h4>
+        <p class="mb-0">
+            Software Engineer <br>
+            Pythonista
+        </p>
+    </div>
 
+    <div class="mb-3">
+        <h4>Follow Me</h4>
+        <ol class="list-unstyled">
+            <li><a href="https://www.linkedin.com/in/andrew-shay-aa73b98b">LinkedIn</a></li>
+            <li><a href="https://github.com/Andrew-Shay">GitHub</a></li>
+            <li><a href="https://gitter.im/andrew-shay/Lobby?utm_source=share-link&utm_medium=link&utm_campaign=share-link">Gitter</a></li>
+            <li><a href="/feed.xml">RSS</a></li>
+        </ol>
+    </div>
+</aside>
+<!-- END SIDEBAR -->
 {% endblock %}

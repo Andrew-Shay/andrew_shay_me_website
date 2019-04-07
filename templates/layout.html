@@ -1,62 +1,82 @@
 <!doctype html>
-<html>
+<html lang="en">
 
 <head>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1285201-1"></script>
-	<script>
-  window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-      gtag('config', 'UA-124185201-1');
-      </script>
-
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="theme-color" content="#48a5ab">
-    <meta name="keywords" content="andrew,shay,{{ this.tags }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="{{ this.description }}">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="apple-touch-icon" href="{{ '/static/img/apple-touch-icon.png'|url }}">
+    <meta name="author" content="Andrew Shay">
+    <meta name="keywords" content="andrew,shay,{{ this.tags }}">
+    <meta http-equiv="Cache-control" content="public">
+
+    <meta name="theme-color" content="#48a5ab">
     <link rel="icon" sizes="192x192" href="{{ '/static/img/apple-touch-icon.png'|url }}">
     <link rel="shortcut icon" href="{{ '/static/img/favicon.ico'|url }}">
-    <link rel="stylesheet" href="{{ '/static/main.css'|url }}">
-	<link rel="stylesheet" href="{{ get_pygments_stylesheet()|url }}">
-    <link href='//fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
-    <script async src="{{ '/static/js/vendor/modernizr-2.8.3-respond-1.4.2.min.js'|url }}"></script>
+    <link rel="apple-touch-icon" href="{{ '/static/img/apple-touch-icon.png'|url }}">
+
+
+    <link rel="stylesheet" href="{{ '/static/css/bootstrap.min.css'|url }}">
+    <link rel="stylesheet" href="{{ get_pygments_stylesheet()|url }}">
+    <link rel="stylesheet" href="{{ '/static/css/custom.css'|url }}">
+    <link rel='stylesheet' href='//fonts.googleapis.com/css?family=Raleway' type='text/css'>
     <title>{{ this.title }} — andrewshay.me</title>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1285201-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-124185201-1');
+    </script>
 </head>
 
+
 <body>
-    <div class="master-wrap">
-        <div class="header-container">
-            <header class="wrapper clearfix">
-                <a href="/blog">
-                    <img alt="print('andrewshay.me')" id="logo" src="{{ '/static/img/logo.png'|url }}" />
+    <main class="container">
+        <div id="inner-wrap">
+            <!-- HEADER -->
+            <div class="d-flex flex-column flex-md-row align-items-center" style="padding: 2rem 0 3rem 0;">
+                <a class="my-0 mr-md-auto" href="/blog">
+                <img style="width: 350px; max-width: 100%;" alt="print('andrewshay.me')"
+                    src="{{ '/static/img/logo.png'|url }}">
                 </a>
-                <nav>
-                    <ul>
-                        {% for href, title in [ ['/blog', 'BLOG'], ['/projects', 'PROJECTS'], ['/contact', 'CONTACT'] ] %}
-                        <li><a href="{{ href|url }}">{{ title }}</a></li>
-                        {% endfor %}
-                    </ul>
+                <nav class="my-2 my-md-0 mr-md-3">
+                    {% for href, title in [ ['/blog', 'BLOG'], ['/projects', 'PROJECTS'], ['/contact', 'CONTACT'] ] %}
+                    <a class="p-2" href="{{ href|url }}">{{ title }}</a>
+                    {% endfor %}
                 </nav>
-            </header>
-        </div>
+            </div>
+            <!-- END HEADER -->
 
-        <div class="main-container">
-            {% block body %}{% endblock %}
-        </div>
-        <!-- #main-container -->
+            <!-- main-row -->
+            <div class="row">
 
-        <div class="footer-container">
-            <footer style="padding-top: 45px;" class="wrapper">
-                <span>andrewshay.me</span>
-            </footer>
+                <!-- main body -->
+                <div class="col">
+
+                    {% block body %}{% endblock %}
+
+            </div>
+            <!-- end main-row -->
+            <div class="row">
+                <div class="col">
+                    <footer class="site-footer">
+                        andrewshay.me
+                    </footer>
+                </div>
+            </div>
         </div>
-    </div>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+        <!--inner-wrap-->
+    </main>
+    <script src="{{ '/static/js/jquery-3.3.1.slim.min.js'|url }}" crossorigin="anonymous"></script>
+    <!-- src="{{ '/static/js/popper.min.js'|url }}" crossorigin="anonymous" -->
+    <script src="{{ '/static/js/bootstrap.min.js'|url }}" crossorigin="anonymous"></script>
+
 </body>
-<!-- Andrew Shay | andrewshay.me | Original Design | Built with HTML5 Boilerplate -->
 </html>

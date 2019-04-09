@@ -23,7 +23,8 @@ code {
   max-width: 100%;
   background-color: #F0F0F0;
   box-sizing: border-box;
-  padding: 0.1rem 0.3rem 0.1rem 0.3rem;
+  padding: 0.05rem 0.3rem 0.05rem 0.3rem;
+
 }
 
 ::-moz-selection {
@@ -101,5 +102,8 @@ nav > a:hover {
 /* pygments */
 .hll > pre {
   padding: 1rem 1rem 1rem 1rem;
+  box-sizing: border-box;
+  border-left: #48A5AB 2px solid;
+  border-bottom: #DADADA 1px solid;
 }
 /* end pygments */

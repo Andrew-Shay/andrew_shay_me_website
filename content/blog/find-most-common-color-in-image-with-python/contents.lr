@@ -1,0 +1,230 @@
+title: Find Most Common Color in an Image with Python
+---
+author: Andrew Shay
+---
+body:
+
+A while ago I wanted my Philips Hue light bulbs to change colors based on the most common color on my monitor.  
+I thought this would be cool when playing video games, which it is!
+
+In this article I will explain a simple way for detecting the most common color in an image using Python.
+
+Note: This article describes my method that I came up with for fun. It is not "the right way" to do this, the fastest, or most efficient. But it is simple!  
+[//]: # (PLUGIN-READ-FULL-POST)
+## Pixels
+
+An image is made up of individual pixels.  Each pixel is a color.  
+To find the most common color we can simply loop through every pixel, get the color, and keep a count of how many times the color appears.  
+
+I found an issue where for instance the color _green_ and _just barely slightly darker green_ are technically two different colors.  
+I couldn't see the difference between these two colors though, so I want them to be counted as a single color.  
+I need similar colors to be counted together because there are too many possible colors.  
+
+## RGB
+
+A color can be represented in RGB.  RGB stands for RED GREEN BLUE.  
+An integer from 0 through 255 is used to represent R, G, and B.  e.g. `255, 7, 125`.  
+There are 16,777,216 total possible colors represented by RGB.  
+0 is no color (i.e. black) and 255 is all color.  
+`0, 0, 0` would be black and `255, 255, 255` would be white.   
+So `0, 0, 255` would be no red, no green, and all blue.  
+`0, 0, 254` would be just slightly darker blue, but not even perceptible.  
+
+## Allowed RGB Values
+
+What I decided to do was to create a set of "allowed" integers for R, G, and B.  
+I would then look at the actual integer, determine which allowed integer it was closest to, and change it to that.  
+This integer "snapping" technically changes the color of the pixel, but it greatly reduces the possible colors that can occur.  
+The pixels almost always still represent the correct color so determining the most common color is much simpler.  
+
+A decent set of evenly distributed allowed integers is `[255, 223, 191, 159, 127, 95,  63,  31, 0]`.  
+This reduces our total possible color count to 729.  
+Let's say we have two pixels `254, 120, 5` and `250, 126, 20`.  
+After we snap the integers we get `255, 127, 0` for both pixels.   
+We took two technically different colors and made them the same so they are counted together.  
+
+If you're looking for "color" you can also remove black, white and gray, from the count.  
+
+## Python Script
+
+Let's take a look at the code.  
+This is a simple straight forward script that can be read from top to bottom.  
+The [Pillow](https://pillow.readthedocs.io/en/stable/) library handles working with the images.  
+`pip install pillow`  
+
+```python
+import os
+
+from PIL import Image
+
+# Open image and get data
+image_path = r"IMAGE_PATH.jpg"
+img = Image.open(image_path)
+width, height = img.size
+
+# The RGB values we will "snap" to
+colors = [255, 223, 191, 159, 127, 95, 63, 31, 0]
+
+original_color_count = {}
+color_count = {}
+# Loop through every pixel in the image and modify it
+for w in range(width):
+    for h in range(height):
+        current_color = img.getpixel((w, h))
+
+        if current_color in original_color_count:
+            original_color_count[current_color] += 1
+        else:
+            original_color_count[current_color] = 1
+
+        r, g, b = current_color
+        r_set = False
+        g_set = False
+        b_set = False
+
+        #  Loop through our allowed values and find the closest value to snap to
+        for i in range(len(colors)):
+            color_one = colors[i]
+            color_two = colors[i + 1]
+
+            if not r_set:
+                if color_one >= r >= color_two:
+                    distance_one = color_one - r
+                    distance_two = r - color_two
+                    r = color_one if distance_one <= distance_two else color_two
+                    r_set = True
+
+            if not g_set:
+                if color_one >= g >= color_two:
+                    distance_one = color_one - g
+                    distance_two = g - color_two
+                    g = color_one if distance_one <= distance_two else color_two
+                    g_set = True
+
+            if not b_set:
+                if color_one >= b >= color_two:
+                    distance_one = color_one - b
+                    distance_two = b - color_two
+                    b = color_one if distance_one <= distance_two else color_two
+                    b_set = True
+
+            if all((r_set, g_set, b_set)):
+                break
+
+        # Set our new pixel back on the image to see the difference
+        new_rgb = (r, g, b)
+        img.putpixel((w, h), new_rgb)
+
+        if new_rgb in color_count:
+            color_count[new_rgb] += 1
+        else:
+            color_count[new_rgb] = 1
+
+# Save our new image
+filename, file_extension = os.path.splitext(image_path)
+new_path = "{}_new{}".format(filename, '.png')
+img.save(new_path)
+
+# Count and sort the colors
+all_colors = color_count.items()
+all_colors = sorted(all_colors, key=lambda tup: tup[1], reverse=True)
+
+# Print out the colors
+print("## All Colors ##")
+for i in range(10):
+    print(all_colors[i])
+
+# Remove black, white and gray
+print("\n## All Colors Filtered ##")
+filtered_colors = [color for color in all_colors if not color[0][0] == color[0][1] == color[0][2]]
+for i in range(10):
+    print(filtered_colors[i])
+
+print("")
+original_color_count = len(original_color_count)
+print("Original Color Count: {}".format(original_color_count))
+new_color_count = len(color_count)
+print("New Color Count: {}".format(new_color_count))
+color_diff = original_color_count - new_color_count
+print("Reduced Color Count By: {}".format(color_diff))
+```
+
+## Examples
+
+Let's compare the changes using some images that I found on [Unsplash](https://unsplash.com/).  
+
+### Jungle
+
+`Photo by Jacob Plumb on Unsplash`  
+[https://unsplash.com/photos/UghHZmnJw58](https://unsplash.com/photos/UghHZmnJw58)
+
+![jacob-plumb-560046-unsplash.jpg](jacob-plumb-560046-unsplash.jpg)  
+
+![jacob-plumb-560046-unsplash_new.png](jacob-plumb-560046-unsplash_new.png)
+
+Top 3 Colors  
+RGB: `0, 31, 0` Count: 61,167  
+RGB: `0, 0, 0` Count: 36,716  
+RGB: `31, 31, 31` Count: 23,208  
+
+Original Color Count: 62,963  
+New Color Count: 167  
+Reduced Color Count By: 62,796  
+
+### Airplane Cockpit
+
+`Photo by JC Gellidon on Unsplash`  
+[https://unsplash.com/photos/7KFVkL1cV0w](https://unsplash.com/photos/7KFVkL1cV0w)  
+
+![jc-gellidon-712663-unsplash.jpg](jc-gellidon-712663-unsplash.jpg)  
+
+![jc-gellidon-712663-unsplash_new.png](jc-gellidon-712663-unsplash_new.png)
+
+Top 3 Colors  
+RGB: `31, 31, 31` Count: 166,090  
+RGB: `63, 63, 63` Count: 28,134  
+RGB: `255, 255, 255` Count: 4,943  
+
+Original Color Count: 21,216  
+New Color Count: 168  
+Reduced Color Count By: 21,048  
+
+### Train Station
+
+`Photo by Patrick Schöpflin on Unsplash`  
+[https://unsplash.com/photos/BnlNjW3AQZ0](https://unsplash.com/photos/BnlNjW3AQZ0)  
+
+![patrick-schopflin-83447-unsplash.jpg](patrick-schopflin-83447-unsplash.jpg)  
+
+![patrick-schopflin-83447-unsplash_new.png](patrick-schopflin-83447-unsplash_new.png)
+
+Top 3 Colors  
+RGB: `31, 31, 31` Count: 57,880  
+RGB: `63, 63, 63` Count: 29,510  
+RGB: `0, 0, 0` Count: 27,606  
+
+Original Color Count: 31,211  
+New Color Count: 117  
+Reduced Color Count By: 31,094  
+
+## Summary
+
+- Loop through every pixel  
+- Snap the RGB values to a smaller subset
+- Count each color  
+
+Pillow `Image` docs [https://pillow.readthedocs.io/en/stable/reference/Image.html](https://pillow.readthedocs.io/en/stable/reference/Image.html)  
+---
+description: Find Most Common Color in an Image with Python
+---
+pub_date: 2019-04-10
+---
+tags:
+
+python
+pil
+pillow
+color
+detection
+article
+image
